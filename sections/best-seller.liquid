@@ -1,0 +1,97 @@
+{% comment %}
+<div class="flex flex-col items-center my-8">
+    <h1 class="text-center text-3xl">{{ section.settings.title }}</h1>
+
+    <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {% for product in section.settings.featured_collection.products limit:
+            section.settings.number_of_products_to_show %}
+            {% render 'product-card', product_product: product %}
+            {% else %}
+            {% for item in (1..4) %}
+            {% render 'product-card-placeholder' %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endcomment %}
+
+<section class='tw-bg-[#F6F0E4] tw-w-full'>
+    <div class='tw-flex tw-flex-col tw-gap-10 lg:tw-gap-16 tw-text-[#282828] tw-py-[64px] tw-px-[25px] lg:tw-py-[80px] lg:tw-px-[104px] tw-max-w-[1280px] tw-mx-auto'>
+        <h1 class='tw-text-[28px] tw-font-semibold tw-leading-9 lg:tw-text-[32px] lg:tw-leading-10'>Bestsellers</h1>
+        <div class='tw-flex tw-flex-row tw-overflow-auto lg:tw-overflow-hidden tw-gap-4 lg:tw-gap-9 tw-snap-x no-scrollbar'>
+            {% for product in section.settings.featured_collection.products limit: section.settings.number_of_products_to_show %}
+            {% comment %} start card {% endcomment %}
+            <a href='{{ product.url }}' class='tw-flex tw-flex-col tw-gap-4 tw-min-w-[222px] tw-snap-start lg:tw-snap-none'>
+                <div>
+                    <img src='{{ product.featured_image | image_url: width: 1000, height: 1000 }}' alt='{{ product.featured_image.alt }}' width='100%' height='100%' class='tw-transition-all tw-ease-in-out tw-duration-500 hover:tw-scale-105'>
+                    <div class="tw-w-full tw-h-0.5 tw-bg-black"></div>
+                </div>
+                <div class='tw-flex tw-flex-col tw-gap-2'>
+                    <div class='tw-flex tw-flex-row tw-justify-between tw-text-[18px] tw-leading-6 tw-font-semibold'>
+                        <div>{{ product.title }}</div>
+                        <div>{{ product.first_available_variant.price | money_without_currency | remove: '.00' }} USD</div>
+                    </div>
+                    <div class='tw-flex tw-flex-row tw-justify-between tw-leading-5 tw-font-causten'>
+                        <div>{{ product.variants[1].title }}</div>
+                        <div class='tw-line-through'>{{ product.variants[1].price | money_without_currency | remove: '.00' }} USD</div>
+                    </div>
+                </div>
+            </a>
+            {% comment %} end card {% endcomment %}
+            {% else %}
+
+            <a href='#' class='tw-flex tw-flex-col tw-gap-4 tw-min-w-[222px] tw-snap-start lg:tw-snap-none'>
+                <div>
+                    <img src='{{ "1.png" | asset_img_url: "1000x1000" }}' alt='' width='100%' height='100%' class='tw-transition-all tw-ease-in-out tw-duration-500 hover:tw-scale-105'>
+                </div>
+                <div class='tw-flex tw-flex-col tw-gap-2'>
+                    <div class='tw-flex tw-flex-row tw-justify-between tw-text-[18px] tw-leading-6 tw-font-semibold'>
+                        <div>Footie & Bonnet</div>
+                        <div>35 USD</div>
+                    </div>
+                    <div class='tw-flex tw-flex-row tw-justify-between tw-leading-5 tw-font-causten'>
+                        <div>Peach</div>
+                        <div class='tw-line-through'>55 USD</div>
+                    </div>
+                </div>
+            </a>
+
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+{% schema %}
+{
+"name": "Featured Collection",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"default": "Featured Collection",
+"label": "Title"
+},
+{
+"type": "collection",
+"id": "featured_collection",
+"label": "Collection"
+},
+{
+"type": "range",
+"id": "number_of_products_to_show",
+"min": 4,
+"max": 12,
+"default": 4,
+"label": "Number of products to show"
+}
+],
+"presets": [
+{
+"name": "Featured Collection"
+}
+]
+}
+{% endschema %}

@@ -1,0 +1,134 @@
+<!doctype html>
+    <html class='js' lang='{{ request.locale.iso_code }}'>
+      <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name='viewport' content='width=device-width,initial-scale=1'>
+    
+        <title>
+          {{ page_title }}
+          {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+          {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+          {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+        </title>
+    
+        {% render 'meta-tags' %}
+    
+        <script defer src='https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js'></script>
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel='preconnect' href='https://fonts.googleapis.com'>
+        <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+        <link href='https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap' rel='stylesheet'>
+    
+        {{ content_for_header }}
+    
+        {{ 'app.css' | asset_url | stylesheet_tag }}
+    
+        {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+          {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
+          <script src='{{ 'localization-form.js' | asset_url }}' defer='defer'></script>
+        {%- endif -%}
+    
+        {%- if settings.predictive_search_enabled -%}
+          <link
+            rel='stylesheet'
+            href='{{ 'component-predictive-search.css' | asset_url }}'
+            media='print'
+            onload="this.media='all'"
+          >
+        {%- endif -%}
+      </head>
+    
+      <body class='tw-bg-gray-100 tw-nanum-myeongjo-regular relative'>
+        <header x-data='{ open: false }' class='md:hidden tw-sticky tw-top-0 tw-z-50'>
+          <div class='tw-flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-py-[30px] tw-bg-[#F6F0E4] tw-z-50'>
+            <button
+              @click='open=!open'
+              class='tw-pl-[20px] tw-flex tw-flex-col tw-gap-1 tw-relative tw-z-50'
+            >
+              <div
+                x-bind:class="open ? 'tw-rotate-45 tw-translate-y-1.5' : ''"
+                class='tw-bg-[#4F4F4F] tw-w-5 tw-h-0.5 tw-transition-all tw-ease-in-out tw-duration-300 tw-z-0'
+              ></div>
+              <div
+                x-bind:class="open ? 'tw-w-0' : 'tw-w-5'"
+                class='tw-bg-[#4F4F4F] tw-h-0.5 tw-transition-all tw-ease-in-out tw-duration-300'
+              ></div>
+              <div
+                x-bind:class="open ? '-tw-rotate-45 -tw-translate-y-1.5' : ''"
+                class='tw-bg-[#4F4F4F] tw-w-5 tw-h-0.5 tw-transition-all tw-ease-in-out tw-duration-300'
+              ></div>
+            </button>
+            <div class='tw-absolute tw-flex tw-justify-center tw-items-center tw-w-full tw-z-40'>
+              <a href='/' class='tw-fill-black'>
+                {% render 'logo-milk-denmark' %}
+              </a>
+            </div>
+            <div class='tw-flex tw-flex-row tw-gap-3 tw-pr-[20px] tw-z-40'>
+              <a
+                href='{{ routes.cart_url }}'
+                class='tw-whitespace-nowrap tw-text-base tw-text-gray-500 tw-hover:text-gray-900'
+              >
+                {% render 'icon-shopping-bag' %}
+              </a>
+              <a
+                href='{{ routes.account_register_url }}'
+                class='tw-text-base tw-text-gray-500 tw-hover:text-gray-900'
+              >
+                {% render 'icon-search' -%}
+              </a>
+            </div>
+          </div>
+    
+          <menu
+            x-bind:class='open ? "tw-translate-y-[0%]" : ""'
+            class='md:hidden tw-flex tw-fixed tw--z-10 tw-bg-[#e7d7b6] tw-w-full tw-translate-y-[100%] tw-transition-all tw-ease-in-out tw-duration-300 tw-flex-col tw-p-4'
+          >
+            {% for link in linklists['main-menu'].links %}
+              <a href='{{ link.url }}'>{{ link.title }}</a>
+            {% endfor %}
+          </menu>
+        </header>
+    
+        <header class='tw-flex tw-flex-col tw-bg-[#F6F0E4] tw-items-center tw-w-full tw-sticky tw-top-[0px]'>
+          <div
+            class='tw-hidden tw-md:flex tw-flex-row tw-justify-between tw-items-center tw-w-full tw-px-[104px] tw-py-[28px] tw-z-50 tw-max-w-[1280px]'
+          >
+            <div>
+              <a href='/'>
+                {% render 'logo-milk-denmark-large' %}
+              </a>
+            </div>
+            <div class='tw-font-default tw-font-bold tw-text-[#282828] tw-flex tw-flex-row tw-gap-[20px]'>
+              {% for link in linklists['main-menu'].links %}
+                <a href='{{ link.url }}'>{{ link.title }}</a>
+              {% endfor %}
+
+            </div>
+            <div class='tw-flex tw-flex-row tw-gap-[20px]'>
+              <a
+                href='{{ routes.cart_url }}'
+                class='tw-whitespace-nowrap tw-text-base tw-text-gray-500 tw-hover:text-gray-900'
+              >
+                {% render 'icon-shopping-bag' %}
+              </a>
+              <a
+                href='{{ routes.account_login_url }}'
+                class='tw-text-base tw-text-gray-500 tw-hover:text-gray-900'
+              >
+                {% render 'icon-user' -%}
+              </a>
+              <a
+                href='{{ routes.account_register_url }}'
+                class='tw-text-base tw-text-gray-500 tw-hover:text-gray-900'
+              >
+                {% render 'icon-search' -%}
+              </a>
+            </div>
+          </div>
+        </header>
+
+        {% section 'footer' %}
+      </body>
+    </html>
+    

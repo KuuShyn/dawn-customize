@@ -1,0 +1,35 @@
+<style>
+    .cta-bg {
+        background-image: url({{ 'm-cta-bg.png' | asset_img_url: '390x454' }});
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .tw-font-causten {
+        font-family: 'causten';
+    }
+
+    @media (min-width: 1024px) {
+        .cta-bg {
+            background-image: url({{ 'd-cta-bg.png' | asset_img_url: '1280x386' }});
+        }
+    }
+</style>
+
+<section class="tw-bg-[#D2CBB8] tw-py-[64px] tw-px-[25px] tw-flex tw-flex-col tw-gap-10 cta-bg">
+    <div class="tw-flex tw-flex-col tw-gap-6 lg:tw-gap-4 lg:tw-text-center">
+        <h1 class="tw-font-semibold tw-text-[28px] tw-leading-9 lg:tw-text-[40px] lg:tw-leading-[50px]">
+            Get notified about <br class="lg:tw-hidden">exclusive deals
+        </h1>
+        <p class="tw-text-[18px] tw-leading-6 lg:tw-text-xl lg:tw-leading-6">
+            Subscribe to get special offers, free <br class="lg:tw-hidden">giveaways and early access. <br>We promise to send emails you will love.
+        </p>
+    </div>
+    <form class="tw-flex tw-flex-col lg:tw-flex-row tw-items-start lg:tw-items-center lg:tw-justify-center tw-gap-3">
+        <input class="tw-w-full lg:tw-w-[508px] tw-p-[17px] tw-rounded-md" placeholder="heyy@email.com">
+        <button class="tw-bg-[#445442] tw-text-white tw-text-sm tw-font-causten tw-font-medium tw-tracking-wider tw-leading-4 tw-px-6 tw-py-5 tw-rounded-md">
+            GET DEALS
+        </button>
+    </form>
+</section>
